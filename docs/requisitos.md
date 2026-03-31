@@ -26,12 +26,15 @@ Regras:
 
 Campos obrigatórios: 
 Todos os campos (nome, sobrenome, id_funcionario, email, senha) devem ser preenchidos.
+
 Campos únicos:
-id_funcionario deve ser único no sistema (não pode haver dois administradores com o mesmo ID).
-email também deve ser único (não pode haver duplicados).
+id_funcionario deve ser único no sistema (não pode haver dois administradores com o mesmo ID). 
+e-mail também deve ser único (não pode haver duplicados).
+
 Validação de formato:
 O campo email deve ter um formato válido (ex: exemplo@dominio.com)
 Nenhum token necessário: Durante o cadastro, não é necessário um token de autenticação.
+
 Respostas de erro:
 Se o id_funcionario ou o email já estiverem cadastrados, a resposta deve ser um erro específico (por exemplo, 409 Conflict com uma mensagem dizendo que o id_funcionario ou o email já existe).
 Se algum campo obrigatório estiver vazio, a resposta deve ser um erro com o código 400 Bad Request.
