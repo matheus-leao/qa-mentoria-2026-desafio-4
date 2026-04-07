@@ -24,9 +24,9 @@ Documento de **definições**, **requisitos** e **regras de negócio** do produt
 
 O sistema deve permitir:
 
-- Cadastrar **administradores**.
-- Cadastrar **leitores**.
-- Cadastrar **livros**.
+- Criação, edição, visualização e exclusão de  **administradores**.
+- Criação, edição, visualização e exclusão de **leitores**.
+- Criação, edição, visualização e exclusão de **livros**.
 - Permitir que usuários **peguem** livro emprestados.
 - Permitir que usuários **devolvam** livros emprestados.
 
