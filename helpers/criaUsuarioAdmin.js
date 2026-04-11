@@ -1,15 +1,15 @@
 import request from 'supertest';
 //const request = require('supertest');
 
-export const usuarioAdmin = async (nome, sobrenome, id, email, senha) => {
-    const admin = await request(process.env.BASE_URL)
+export const usuarioAdmin = async (app, nome, sobrenome, id, email, senha) => {
+    const admin = await request(app)
         .post('/administradores')
         .set('Content-Type', 'application/json')
         .send({
             'nome': nome,
             'sobrenome': sobrenome,
             'id_funcionario': id,
-            'e-mail': email,
+            'email': email,
             'senha': senha
         });
 

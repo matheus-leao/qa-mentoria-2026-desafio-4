@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { expect } from 'chai';
-import 'dotenv/config';
+import app from '../app.js';
 import { usuarioAdmin } from '../helpers/criaUsuarioAdmin.js';
 import { obterToken } from '../helpers/autenticacao.js';
 /*const request = require('supertest');
@@ -12,14 +12,14 @@ describe('Testes de Cadastro de Livros', () => {
     let token;
 
     before(async () => {
-        admin = await usuarioAdmin('Admin', 'Teste', '10', 'admin@teste.com', 'senha123');
-        token = await obterToken(admin.body.id_funcionario, admin.body.senha);
+        admin = await usuarioAdmin(app, 'Admin', 'Teste', '10', 'admin@teste.com', 'senha123');
+        token = await obterToken(app, admin.body.id_funcionario, 'senha123');
     });
 
 
     describe('GET /cadastroLivros', () => {
         it ('BUsca a lista de Livros cadastrados', async () => {
-            const resposta = await request(process.env.BASE_URL)
+            const resposta = await request(app)
             .get('/livros')
             .set('Authorization', `Bearer ${token}`);
 

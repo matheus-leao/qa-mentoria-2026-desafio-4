@@ -1,9 +1,9 @@
 import request from 'supertest';
 //const request = require('supertest');
 
-export const obterToken = async (id, senha) => {
-    const respostaLogin = await request(process.env.BASE_URL)
-        .post('/login')
+export const obterToken = async (app, id, senha) => {
+    const respostaLogin = await request(app)
+        .post('/auth/admin/login')
         .set('Content-Type', "application/json")
         .send({ 
             "id_funcionario": id, 
