@@ -1,0 +1,12 @@
+{
+  "id_livro": "1A",
+  "nome": "Livro de Teste",
+  "autores": ["Autor 1", "Autor 2"],
+  "ano_publicacao": 2020,
+  "edicao": 1,
+  "paginas": 300,
+  "qtde_disponivel": 5,
+  "categoria": ["Ficção"],
+  "editora": "Editora Teste",
+  "idioma": "Português"
+}
