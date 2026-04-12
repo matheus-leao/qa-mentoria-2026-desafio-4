@@ -1,5 +1,4 @@
 import request from 'supertest';
-//const request = require('supertest');
 
 export const obterToken = async (app, id_funcionario, senha) => {
     const respostaLogin = await request(app)
