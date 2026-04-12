@@ -1,26 +1,25 @@
 import request from 'supertest';
 import { expect } from 'chai';
-import app from '../app.js';
+import { getApp } from './api/helpers/appBuilder.js';
+//import app from '../app.js';
 import { usuarioAdmin } from '../helpers/criaUsuarioAdmin.js';
 import { obterToken } from '../helpers/autenticacao.js';
 import livro from '../fixtures/postLivros.json' with { type: 'json' };
-/*const request = require('supertest');
-const { expect } = require('chai');
-require('dotenv').config();*/
+
 
 describe('Testes de Cadastro de Livros', () => { 
     let admin;
     let token;
 
     before(async () => {
-        admin = await usuarioAdmin(app, 'Admin', 'Teste', '10', 'admin@teste.com', 'senha123');
-        token = await obterToken(app, admin.body.id_funcionario, 'senha123');
+        admin = await usuarioAdmin(getApp(), 'Admin', 'Teste', '10', 'admin@teste.com', 'senha123');
+        token = await obterToken(getApp(), admin.body.id_funcionario, 'senha123');
     });
 
 
     describe('GET /cadastroLivros', () => {
         it ('BUsca a lista de Livros cadastrados', async () => {
-            const resposta = await request(app)
+            const resposta = await request(getApp())
             .get('/livros')
             .set('Authorization', `Bearer ${token}`);
 
@@ -31,7 +30,7 @@ describe('Testes de Cadastro de Livros', () => {
 
     describe('POST /Livros', () => {
         it ('Cria um novo registro livro e retorna 201 ', async () => {
-            const resposta = await request(app)
+            const resposta = await request(getApp())
             .post('/livros')
             .set('Authorization', `Bearer ${token}`)
             .send(livro);
@@ -39,7 +38,7 @@ describe('Testes de Cadastro de Livros', () => {
             expect(resposta.status).to.equal(201);
             expect(resposta.body.id_livro).to.be.a('string').and.to.equal('1A');
             expect(resposta.body.nome).to.be.a('string').and.to.equal('Livro de Teste');
-            expect(resposta.body.autores).to.be.an('array').of('strings').that.includes('Autor 1', 'Autor 2');
+            expect(resposta.body.autores).to.be.an('array').of.strings().that.includes('Autor 1', 'Autor 2');
             expect(resposta.body.ano_publicacao).to.be.a('number').and.to.equal(2020);
             expect(resposta.body.edicao).to.be.a('number').and.to.equal(1);
             expect(resposta.body.paginas).to.be.a('number').and.to.equal(300);
@@ -53,7 +52,7 @@ describe('Testes de Cadastro de Livros', () => {
             const livroInvalido = { ...livro };
             livroInvalido.autores = ''; // Deveria ter no mínimo um autor
             
-            const resposta = await request(app)
+            const resposta = await request(getApp())
             .post('/livros')
             .set('Authorization', `Bearer ${token}`)
             .send(livroInvalido)
@@ -65,7 +64,7 @@ describe('Testes de Cadastro de Livros', () => {
         it ('Tenta criar um registro sem token de validação do usuário admin e retorna 401 ', async () => {
             const tokenInvalido = ''; // Deveria ter o token de autenticação do usuário admin
             
-            const resposta = await request(app)
+            const resposta = await request(getApp())
             .post('/livros')
             .set('Authorization', `Bearer ${tokenInvalido}`)
             .send(livro)
@@ -74,7 +73,7 @@ describe('Testes de Cadastro de Livros', () => {
         });
 
         it ('Tenta criar um registro duplicado e retorna 409 ', async () => {
-            const resposta = await request(app)
+            const resposta = await request(getApp())
             .post('/livros')
             .set('Authorization', `Bearer ${token}`)
             .send(livro)
