@@ -1,5 +1,4 @@
 import request from 'supertest';
-//const request = require('supertest');
 
 export const usuarioAdmin = async (app, nome, sobrenome, id, email, senha) => {
     const admin = await request(app)
