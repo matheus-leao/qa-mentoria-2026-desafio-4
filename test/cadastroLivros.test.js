@@ -1,7 +1,6 @@
 import request from 'supertest';
 import { expect } from 'chai';
 import { getApp } from './api/helpers/appBuilder.js';
-//import app from '../app.js';
 import { usuarioAdmin } from '../helpers/criaUsuarioAdmin.js';
 import { obterToken } from '../helpers/autenticacao.js';
 import livro from '../fixtures/postLivros.json' with { type: 'json' };
@@ -20,16 +19,14 @@ describe('Testes de Cadastro de Livros', () => {
     describe('GET /cadastroLivros', () => {
         it ('BUsca a lista de Livros cadastrados', async () => {
             const resposta = await request(getApp())
-            .get('/livros')
-            .set('Authorization', `Bearer ${token}`);
+            .get('/livros');
 
             expect(resposta.status).to.equal(200);
-        
         });
     });
 
     describe('POST /Livros', () => {
-        it.skip('Cria um novo registro livro e retorna 201 ', async () => {
+        it.skip('Cadastra um novo livro e retorna 201 ', async () => {
             const livroValido = { ...livro, id_livro: '201S' };
             //Bug rastreado em: https://github.com/matheus-leao/qa-mentoria-2026-desafio-4/issues/23#issue-4249456071
             const resposta = await request(getApp())
@@ -50,7 +47,7 @@ describe('Testes de Cadastro de Livros', () => {
             expect(resposta.body.idioma).to.be.a('string').and.to.equal('Português');
         });
 
-        it('Tenta criar um registro com dados inválidos ou ausentes e retorna 400 ', async () => {
+        it('Tenta cadastrar um novo livro com dados inválidos ou ausentes e retorna 400 ', async () => {
             const livroInvalido = { ...livro, autores: '' }; // Deveria ter no mínimo um autor
                         
             const resposta = await request(getApp())
@@ -62,7 +59,7 @@ describe('Testes de Cadastro de Livros', () => {
             expect(resposta.body.erro).to.equal('Dados inválidos');
         });
 
-        it('Tenta criar um registro sem token de validação do usuário admin e retorna 401 ', async () => {
+        it('Tenta cadastrar um novo livro sem token de validação do usuário admin e retorna 401 ', async () => {
             const tokenInvalido = ''; // Deveria ter o token de autenticação do usuário admin
             const livroValido = { ...livro, id_livro: '401A' };
             
@@ -74,7 +71,7 @@ describe('Testes de Cadastro de Livros', () => {
             expect(resposta.status).to.equal(401);
         });
 
-        it('Tenta criar um registro duplicado e retorna 409 ', async () => {
+        it('Tenta cadastrar um novo livro duplicado e retorna 409 ', async () => {
             const livroDuplicado = { ...livro, id_livro: 'DUP01' };
 
             const criacao = await request(getApp())
@@ -108,7 +105,6 @@ describe('Testes de Cadastro de Livros', () => {
 
             const resposta = await request(getApp())
             .get('/livros/200GET')
-            .set('Authorization', `Bearer ${token}`)
             .send(livroValido.id_livro);
 
             expect(resposta.status).to.equal(200);
@@ -119,7 +115,6 @@ describe('Testes de Cadastro de Livros', () => {
             const livroInexistente = {...livro, id_livro: '999'}; // ID que não existe no sistema
             const resposta = await request(getApp())
             .get('/livros/999')
-            .set('Authorization', `Bearer ${token}`)
             .send(livroInexistente.id_livro);
 
             expect(resposta.status).to.equal(404);
