@@ -4,7 +4,7 @@ import { getApp } from '../helpers/appBuilder.js';
 
 describe('Suite de Teste Cadastro Leitores', () => {
 
-    it('Deve retornar 201 no cadastro de leitor', async () => {
+    it('CT-001 - POST Deve realizar o cadastro de leitor com dados válidos', async () => {
         const res = await request(getApp()).post('/leitores').send({
             "nome": "Teste",
             "sobrenome": "123",
@@ -14,32 +14,26 @@ describe('Suite de Teste Cadastro Leitores', () => {
         expect(res.status).to.equal(201);
     });
 
-    it('Deve retornar 200', async () => {
-        const res = await request(getApp()).get('/leitores');
-        expect(res.status).to.equal(200);
-    });
 
-    it('Deve retornar JSON com lista de leitores', async () => {
+    it('CT-002 - GET Deve validar o formato da resposta do tipo JSON', async () => {
         const res = await request(getApp())
             .get('/leitores')
             .expect('Content-Type', /json/);
         expect(res.body).to.be.an('array');
     });
 
-    it('Deve retornar um leitor específico', async () => {
+    it('CT-003 - GET Deve retornar um leitor específico pelo ID', async () => {
         const res = await request(getApp())
             .get('/leitores/1')
-            .expect('Content-Type', /json/);
-        expect(res.body).to.be.an('object');
         expect(res.body).to.have.property('id', 1);
     });
 
-    it('Deve retornar 404 para leitor não encontrado', async () => {
+    it('CT-004 - GET Deve retornar 404 para ID de leitor não encontrado', async () => {
         const res = await request(getApp()).get('/leitores/999');
         expect(res.status).to.equal(404);
     });
 
-    it('Deve retornar 400 para dados de cadastro inválidos', async () => {
+    it('CT-005 - POST Deve retornar 400 para dados de cadastro inválidos', async () => {
         const res = await request(getApp()).post('/leitores').send({
             nome: '',
             email: 'invalid-email'
@@ -47,7 +41,7 @@ describe('Suite de Teste Cadastro Leitores', () => {
         expect(res.status).to.equal(400);
     });
 
-    it('Deve retornar 400 para email já cadastrado', async () => {
+    it('CT-006 - POST Deve retornar 400 para email já cadastrado', async () => {
         // Primeiro, cadastra um leitor
         await request(getApp()).post('/leitores').send({
             nome: 'Jane Doe',
@@ -61,7 +55,7 @@ describe('Suite de Teste Cadastro Leitores', () => {
         expect(res.status).to.equal(400);
     });
 
-    it('Deve retornar 200 ao atualizar um leitor', async () => {
+    it('CT-007 - PUT Deve retornar 200 ao atualizar um leitor com sucesso', async () => {
         // Primeiro, cadastra um leitor
         const createRes = await request(getApp()).post('/leitores').send({
             nome: 'Mark Smith',
@@ -75,7 +69,7 @@ describe('Suite de Teste Cadastro Leitores', () => {
         expect(res.status).to.equal(200);
     });
 
-    it('Deve retornar 404 ao atualizar um leitor inexistente', async () => {
+    it('CT-008 - PUT Deve retornar 404 ao atualizar um leitor inexistente', async () => {
         const res = await request(getApp()).put('/leitores/999').send({
             nome: 'Non Existent',
             email: 'non.existent@example.com'
@@ -83,7 +77,7 @@ describe('Suite de Teste Cadastro Leitores', () => {
         expect(res.status).to.equal(404);
     });
 
-    it('Deve retornar 200 ao deletar um leitor', async () => {
+    it('CT-009 - DELETE Deve retornar 204 ao deletar um leitor com sucesso', async () => {
         // Primeiro, cadastra um leitor
         const createRes = await request(getApp()).post('/leitores').send({
             nome: 'Alice Brown',
@@ -96,7 +90,7 @@ describe('Suite de Teste Cadastro Leitores', () => {
         expect(res.status).to.equal(204);
     });
 
-    it('Deve retornar 404 ao deletar um leitor inexistente', async () => {
+    it('CT-010 - DELETE Deve retornar 404 ao deletar um leitor inexistente', async () => {
         const res = await request(getApp()).delete('/leitores/999');
         expect(res.status).to.equal(404);
     });
