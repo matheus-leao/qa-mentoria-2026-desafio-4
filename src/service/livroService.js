@@ -10,6 +10,13 @@ function anoValido(ano) {
   return true;
 }
 
+function toLivroResponse(livro) {
+  return {
+    ...livro,
+    autores: normalizeAutores(livro.autores),
+  };
+}
+
 export function criarLivro(body) {
   const {
     id_livro,
@@ -109,7 +116,7 @@ export function criarLivro(body) {
   livrosByIsbn.set(isbn, livro);
   signatures.set(sig, isbn);
 
-  return { ...livro };
+  return toLivroResponse(livro);
 }
 
 export function buscarLivroPorIsbn(isbn) {
@@ -122,12 +129,12 @@ export function atualizarQtdeLivro(isbn, novaQtde) {
 }
 
 export function listarLivros() {
-  return Array.from(livrosByIsbn.values()).map((livro) => ({ ...livro }));
+  return Array.from(livrosByIsbn.values()).map(toLivroResponse);
 }
 
 export function buscarLivroPublicoPorIsbn(isbn) {
   const livro = livrosByIsbn.get(String(isbn).trim());
-  return livro ? { ...livro } : null;
+  return livro ? toLivroResponse(livro) : null;
 }
 
 function normalizarLivroPayload(body, { isUpdate = false } = {}) {
@@ -267,7 +274,7 @@ export function atualizarLivro(isbnParam, body) {
   signatures.delete(assinaturaAtual);
   signatures.set(novaAssinatura, livro.id_livro);
 
-  return { ...livro };
+  return toLivroResponse(livro);
 }
 
 export function removerLivro(isbn) {
