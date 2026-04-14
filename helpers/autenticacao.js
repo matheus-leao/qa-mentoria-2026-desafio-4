@@ -5,11 +5,9 @@ export const obterToken = async (app, id_funcionario, senha) => {
         .post('/auth/admin/login')
         .set('Content-Type', "application/json")
         .send({ 
-            "id_funcionario": id, 
+            "id_funcionario": id_funcionario, 
             "senha": senha
         });
 
-    return respostaLogin.body.token;
-
-    
+    return respostaLogin.body.token;    
 };
