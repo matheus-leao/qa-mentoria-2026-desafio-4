@@ -16,10 +16,12 @@
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "express": "^5.2.1",
+    "faker": "^6.6.6",
     "jsonwebtoken": "^9.0.3",
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.4.0",
     "chai": "^6.2.2",
     "dotenv": "^17.4.1",
     "mocha": "^11.7.5",
