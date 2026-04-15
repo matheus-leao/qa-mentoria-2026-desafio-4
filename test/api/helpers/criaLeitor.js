@@ -1,6 +1,6 @@
 import request from 'supertest';
 
-export const criaLeitor = async (app, usuarioLeitor) => {
+export const criarLeitor = async (app, usuarioLeitor) => {
     const leitor = await request(app)
         .post('/leitores')
         .set('Content-Type', 'application/json')
