@@ -18,12 +18,10 @@ describe("POST /livros", () => {
       .send(adminPayload);
     expect(createdAdmin.status).to.equal(201);
 
-    const loginResponse = await request(app)
-      .post("/auth/admin/login")
-      .send({
-        id_funcionario: adminPayload.id_funcionario,
-        senha: adminPayload.senha,
-      });
+    const loginResponse = await request(app).post("/auth/admin/login").send({
+      id_funcionario: adminPayload.id_funcionario,
+      senha: adminPayload.senha,
+    });
 
     expect(loginResponse.status).to.equal(200);
     expect(loginResponse.body).to.have.property("token");
