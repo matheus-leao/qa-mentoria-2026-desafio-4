@@ -8,7 +8,9 @@
     "start": "node server.js",
     "dev": "node --watch server.js",
     "test": "mocha \"test/**/*.test.js\"",
+    "test:report": "mocha \"test/**/*.test.js\" --reporter mochawesome --reporter-options reportDir=mochawesome-report,reportFilename=report",
     "prettier": "npx prettier . --write",
+    "prettier:check": "npx prettier . --check",
     "report": "mocha testfile.js --reporter mochawesome"
   },
   "engines": {
