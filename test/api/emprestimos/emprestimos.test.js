@@ -6,6 +6,7 @@ import { obterToken } from '../helpers/autenticacao.js';
 import { cadastrarLivroValido } from '../helpers/cadastraLivro.js';
 import livro from '../fixtures/postLivros.json' with { type: 'json' };
 import { faker } from '@faker-js/faker';
+import { criarLeitor } from '../helpers/criaLeitor.js';
 
 describe('Testes de Cadastro de Livros', () => { 
     let leitor;
@@ -18,9 +19,8 @@ describe('Testes de Cadastro de Livros', () => {
         "email": faker.internet.email(),
         "senha": "senha123"
     }
-
     before(async () => {
-        leitor = await criaLeitor(getApp(), usuarioLeitorFaker);
+        leitor = await criarLeitor(getApp(), usuarioLeitorFaker);
         token = await obterToken(getApp(), usuarioLeitorFaker.email, usuarioLeitorFaker.senha);
         livroCadastrado = await cadastrarLivroValido(getApp(), token, livro);
     });
@@ -47,13 +47,6 @@ describe('Testes de Cadastro de Livros', () => {
             .send({ livro_id: livroCadastrado.id_livro });
             expect(resposta.status).to.equal(401);
         });
-        /*it('Usuario nao autorizado e retorna 403 ', async () => {
-            const resposta = await request(getApp())
-            .post('/login')
-            .set('Authorization', `Bearer ${token}`)
-            .send({ livro_id: livroCadastrado.id_livro });
-            expect(resposta.status).to.equal(403);
-        });*/
         it('Livro indisponivel e retorna 409 ', async () => {
             const livroIndisponivel = { ...livroCadastrado, qtde_disponivel: 0 };
             const resposta = await request(getApp())
@@ -86,13 +79,6 @@ describe('Testes de Cadastro de Livros', () => {
             .send({ livro_id: livroCadastrado.id_livro, id_emprestimo: 1 });
             expect(resposta.status).to.equal(401);
         });
-        /*it('Não autorizado a devolver e retorna 403 ', async () => {
-            const resposta = await request(getApp())
-            .post('/devolucoes')
-            .set('Authorization', `Bearer ${token}`)
-            .send({ livro_id: livroCadastrado.id_livro, id_emprestimo: 1 });
-            expect(resposta.status).to.equal(403);
-        });*/
         it('Emprestimo não encontrado e retorna 404 ', async () => {
             const resposta = await request(getApp())
             .post('/devolucoes')
