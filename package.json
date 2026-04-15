@@ -8,7 +8,8 @@
     "start": "node server.js",
     "dev": "node --watch server.js",
     "test": "mocha \"test/**/*.test.js\"",
-    "prettier": "npx prettier . --write"
+    "prettier": "npx prettier . --write",
+    "report": "mocha testfile.js --reporter mochawesome"
   },
   "engines": {
     "node": ">=18"
@@ -19,6 +20,7 @@
     "express": "^5.2.1",
     "faker": "^6.6.6",
     "jsonwebtoken": "^9.0.3",
+    "mochawesome": "^7.1.4",
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
