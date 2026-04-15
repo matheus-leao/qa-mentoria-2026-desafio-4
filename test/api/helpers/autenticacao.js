@@ -1,15 +1,37 @@
 import request from 'supertest';
-import { getApp } from '../helpers/appBuilder.js';
+import app from '../../../app.js';
 
-export const postLogin = async (nome, sobrenome, id, email, senha) => {
-    const responseLogin = await request(getApp()).post('/administradores')
+export const postLogin = async (nome, sobrenome, id_funcionario, email, senha) => {
+    await request(app)
+        .post('/administradores')
+        .set('Content-Type', 'application/json')
         .send({
-                'nome': 'Luana',
-                'sobrenome': 'Nascimento',
-                'id_funcionario': 11,
-                'email': 'luana@example.com',
-                'senha': '123456'
-            })
+            nome,
+            sobrenome,
+            id_funcionario,
+            email,
+            senha,
+        });
 
-    return responseLogin;
-}
+    const respostaLogin = await request(app)
+        .post('/auth/admin/login')
+        .set('Content-Type', 'application/json')
+        .send({
+            id_funcionario,
+            senha,
+        });
+
+    return respostaLogin;
+};
+
+export const obterToken = async (appInstance, id_funcionario, senha) => {
+    const respostaLogin = await request(appInstance)
+        .post('/auth/admin/login')
+        .set('Content-Type', "application/json")
+        .send({ 
+            "id_funcionario": id_funcionario, 
+            "senha": senha
+        });
+
+    return respostaLogin.body.token;
+};

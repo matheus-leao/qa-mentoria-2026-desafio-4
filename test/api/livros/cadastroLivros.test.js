@@ -1,9 +1,9 @@
 import request from 'supertest';
 import { expect } from 'chai';
 import { getApp } from '../helpers/appBuilder.js';
-import { criaUsuarioAdmin } from '../../../helpers/criaUsuarioAdmin.js';
-import { obterToken } from '../../../helpers/autenticacao.js';
-import { cadastrarLivroValido } from '../../../helpers/cadastraLivro.js';
+import { criaUsuarioAdmin } from '../helpers/criaUsuarioAdmin.js';
+import { obterToken } from '../helpers/autenticacao.js';
+import { cadastrarLivroValido } from '../helpers/cadastraLivro.js';
 import livro from '../fixtures/postLivros.json' with { type: 'json' };
 import { faker } from '@faker-js/faker';
 
