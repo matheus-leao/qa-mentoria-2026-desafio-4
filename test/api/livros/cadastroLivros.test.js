@@ -1,11 +1,11 @@
 import request from 'supertest';
 import { expect } from 'chai';
-import { getApp } from './api/helpers/appBuilder.js';
-import { criaUsuarioAdmin } from '../helpers/criaUsuarioAdmin.js';
-import { obterToken } from '../helpers/autenticacao.js';
-import { cadastrarLivroValido } from '../helpers/cadastraLivro.js';
-import livro from '../fixtures/postLivros.json' with { type: 'json' };
-import usuarioAdmin from '../fixtures/usuarioAdmin.json' with { type: 'json' };
+import { getApp } from '../helpers/appBuilder.js';
+import { criaUsuarioAdmin } from '../../../helpers/criaUsuarioAdmin.js';
+import { obterToken } from '../../../helpers/autenticacao.js';
+import { cadastrarLivroValido } from '../../../helpers/cadastraLivro.js';
+import livro from '../../../fixtures/postLivros.json' with { type: 'json' };
+import usuarioAdmin from '../../../fixtures/usuarioAdmin.json' with { type: 'json' };
 
 describe('Testes de Cadastro de Livros', () => { 
     let admin;
@@ -14,7 +14,7 @@ describe('Testes de Cadastro de Livros', () => {
 
     before(async () => {
         admin = await criaUsuarioAdmin(getApp(), usuarioAdmin);
-        token = await obterToken(getApp(), admin.body.id_funcionario, 'senha123');
+        token = await obterToken(getApp(), usuarioAdmin.id_funcionario, usuarioAdmin.senha);
         livroCadastrado = await cadastrarLivroValido(getApp(), token, livro);
     });
 
@@ -30,7 +30,7 @@ describe('Testes de Cadastro de Livros', () => {
     });
 
     describe('POST /Livros', () => {
-        it.skip('Cadastra um novo livro e retorna 201 ', async () => {
+        it('Cadastra um novo livro e retorna 201 ', async () => {
             const livroValido = { ...livroCadastrado, id_livro: '201S' };
             //Bug rastreado em: https://github.com/matheus-leao/qa-mentoria-2026-desafio-4/issues/23#issue-4249456071
             const resposta = await request(getApp())

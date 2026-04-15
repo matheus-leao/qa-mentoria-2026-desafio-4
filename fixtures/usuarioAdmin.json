@@ -1,7 +1,7 @@
 {
     "nome": "Admin",
     "sobrenome": "Teste",
-    "id_funcionario": "10",
+    "id_funcionario": 10,
     "email": "admin@teste.com",
     "senha": "senha123"
 }
