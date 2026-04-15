@@ -1,5 +1,5 @@
-import { emprestimos } from '../model/store.js';
-import { buscarLivroPorIsbn, atualizarQtdeLivro } from './livroService.js';
+import { emprestimos } from "../model/store.js";
+import { buscarLivroPorIsbn, atualizarQtdeLivro } from "./livroService.js";
 /**
  * Devolução por id do empréstimo (escopo funcional: devolver livro).
  */
@@ -8,36 +8,44 @@ export function registrarDevolucao(idLeitor, body) {
 
   let emprestimo = null;
 
-  if (id_emprestimo !== undefined && id_emprestimo !== null && id_emprestimo !== '') {
+  if (
+    id_emprestimo !== undefined &&
+    id_emprestimo !== null &&
+    id_emprestimo !== ""
+  ) {
     const id = Number(id_emprestimo);
     emprestimo = emprestimos.find((e) => e.id === id);
-  } else if (id_livro !== undefined && id_livro !== null && String(id_livro).trim() !== '') {
+  } else if (
+    id_livro !== undefined &&
+    id_livro !== null &&
+    String(id_livro).trim() !== ""
+  ) {
     const isbn = String(id_livro).trim();
     emprestimo = emprestimos.find(
       (e) =>
         e.id_livro === isbn &&
-        e.status === 'ativo' &&
+        e.status === "ativo" &&
         e.id_usuario === idLeitor,
     );
   }
 
   if (!emprestimo) {
-    const err = new Error('NOT_FOUND');
+    const err = new Error("NOT_FOUND");
     err.status = 404;
-    err.detalhes = ['Empréstimo ativo não encontrado para este usuário.'];
+    err.detalhes = ["Empréstimo ativo não encontrado para este usuário."];
     throw err;
   }
 
   if (emprestimo.id_usuario !== idLeitor) {
-    const err = new Error('FORBIDDEN');
+    const err = new Error("FORBIDDEN");
     err.status = 403;
     throw err;
   }
 
-  if (emprestimo.status !== 'ativo') {
-    const err = new Error('BAD_REQUEST');
+  if (emprestimo.status !== "ativo") {
+    const err = new Error("BAD_REQUEST");
     err.status = 400;
-    err.detalhes = ['Este empréstimo já foi devolvido.'];
+    err.detalhes = ["Este empréstimo já foi devolvido."];
     throw err;
   }
 
@@ -46,9 +54,9 @@ export function registrarDevolucao(idLeitor, body) {
     atualizarQtdeLivro(emprestimo.id_livro, livro.qtde_disponivel + 1);
   }
 
-  emprestimo.status = 'devolvido';
+  emprestimo.status = "devolvido";
   return {
-    mensagem: 'Devolução registrada com sucesso.',
+    mensagem: "Devolução registrada com sucesso.",
     id_emprestimo: emprestimo.id,
     id_livro: emprestimo.id_livro,
   };
