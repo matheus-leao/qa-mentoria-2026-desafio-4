@@ -1,15 +1,15 @@
-import { emprestimos, nextEmprestimoId } from '../model/store.js';
-import { buscarLivroPorIsbn, atualizarQtdeLivro } from './livroService.js';
-import { buscarLeitorPorId } from './leitorService.js';
+import { emprestimos, nextEmprestimoId } from "../model/store.js";
+import { buscarLivroPorIsbn, atualizarQtdeLivro } from "./livroService.js";
+import { buscarLeitorPorId } from "./leitorService.js";
 import {
   addWeekdaysAfter,
   diasRestantesCorridos,
   formatDateISO,
-} from '../utils/businessDays.js';
+} from "../utils/businessDays.js";
 
 function emprestimosAtivosPorLivro(idLivro) {
   return emprestimos.filter(
-    (e) => e.id_livro === idLivro && e.status === 'ativo',
+    (e) => e.id_livro === idLivro && e.status === "ativo",
   );
 }
 
@@ -24,8 +24,12 @@ export function criarEmprestimo(idUsuarioLeitor, body) {
   const idLeitor = Number(idUsuarioLeitor);
   const id_livro = body?.id_livro;
 
-  if (id_livro === undefined || id_livro === null || String(id_livro).trim() === '') {
-    const err = new Error('EMPRESTIMO_VALIDATION');
+  if (
+    id_livro === undefined ||
+    id_livro === null ||
+    String(id_livro).trim() === ""
+  ) {
+    const err = new Error("EMPRESTIMO_VALIDATION");
     err.status = 400;
     err.detalhes = [
       "Campo 'id_livro' deve ser informado. Scaneie ou informe manualmente o codigo ISBN.",
@@ -36,15 +40,15 @@ export function criarEmprestimo(idUsuarioLeitor, body) {
   const isbn = String(id_livro).trim();
   const livro = buscarLivroPorIsbn(isbn);
   if (!livro) {
-    const err = new Error('NOT_FOUND');
+    const err = new Error("NOT_FOUND");
     err.status = 400;
-    err.detalhes = ['Livro não encontrado para o ISBN informado.'];
+    err.detalhes = ["Livro não encontrado para o ISBN informado."];
     throw err;
   }
 
   const leitor = buscarLeitorPorId(idLeitor);
   if (!leitor) {
-    const err = new Error('INTERNAL');
+    const err = new Error("INTERNAL");
     err.status = 500;
     throw err;
   }
@@ -55,7 +59,7 @@ export function criarEmprestimo(idUsuarioLeitor, body) {
   if (livro.qtde_disponivel <= 1) {
     const proxima = proximaDataDevolucaoPrevista(isbn);
     const dataRef = proxima || hoje;
-    const err = new Error('INDISPONIVEL');
+    const err = new Error("INDISPONIVEL");
     err.status = 409;
     err.data_devolucao = formatDateISO(dataRef);
     throw err;
@@ -67,8 +71,8 @@ export function criarEmprestimo(idUsuarioLeitor, body) {
 
   const nome_usuario = `${leitor.nome} ${leitor.sobrenome}`.trim();
   const categoriaStr = Array.isArray(livro.categoria)
-    ? livro.categoria.join(', ')
-    : String(livro.categoria || '');
+    ? livro.categoria.join(", ")
+    : String(livro.categoria || "");
 
   const novaQtde = livro.qtde_disponivel - 1;
   atualizarQtdeLivro(isbn, novaQtde);
@@ -86,7 +90,7 @@ export function criarEmprestimo(idUsuarioLeitor, body) {
     data_devolucao: formatDateISO(data_devolucao),
     dias,
     qtde_disponivel: novaQtde,
-    status: 'ativo',
+    status: "ativo",
   };
 
   emprestimos.push(registro);

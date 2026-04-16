@@ -6,17 +6,17 @@ Documento de **definições**, **requisitos** e **regras de negócio** do produt
 
 ## 1. Definições
 
-| Termo | Definição |
-|--------|------------|
-| **Administrador** | Usuário com permissão para gerenciar a biblioteca; cadastrado conforme seção 3. |
-| **Leitor** | Usuário cadastrado para utilização do sistema de biblioteca, conforme capacidade de cadastro de leitores no escopo funcional. |
-| **Livro** | Obra cadastrada no acervo, com metadados e quantidade de exemplares; vide seção 5. |
-| **ISBN** | Código informado pelo usuário (digitalização ou digitação) para identificar o livro no empréstimo; tratado no sistema como valor de **`id_livro`**. |
-| **`id_livro`** | Identificador do livro no domínio do sistema; no fluxo de empréstimo, corresponde ao **ISBN** informado. |
-| **`qtde_disponivel`** | Quantidade de exemplares disponíveis para locação (não necessariamente igual ao total no acervo; vide regras de empréstimo). |
-| **`data_emprestimo`** | Data em que o empréstimo é realizado; deve coincidir com a data atual da operação. |
-| **`data_devolucao`** | Data prevista de devolução, calculada a partir de `data_emprestimo` conforme regra de prazo. |
-| **`dias`** | Quantidade de dias restantes até o término do prazo do empréstimo. |
+| Termo                 | Definição                                                                                                                                           |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Administrador**     | Usuário com permissão para gerenciar a biblioteca; cadastrado conforme seção 3.                                                                     |
+| **Leitor**            | Usuário cadastrado para utilização do sistema de biblioteca, conforme capacidade de cadastro de leitores no escopo funcional.                       |
+| **Livro**             | Obra cadastrada no acervo, com metadados e quantidade de exemplares; vide seção 5.                                                                  |
+| **ISBN**              | Código informado pelo usuário (digitalização ou digitação) para identificar o livro no empréstimo; tratado no sistema como valor de **`id_livro`**. |
+| **`id_livro`**        | Identificador do livro no domínio do sistema; no fluxo de empréstimo, corresponde ao **ISBN** informado.                                            |
+| **`qtde_disponivel`** | Quantidade de exemplares disponíveis para locação (não necessariamente igual ao total no acervo; vide regras de empréstimo).                        |
+| **`data_emprestimo`** | Data em que o empréstimo é realizado; deve coincidir com a data atual da operação.                                                                  |
+| **`data_devolucao`**  | Data prevista de devolução, calculada a partir de `data_emprestimo` conforme regra de prazo.                                                        |
+| **`dias`**            | Quantidade de dias restantes até o término do prazo do empréstimo.                                                                                  |
 
 ---
 
@@ -24,7 +24,7 @@ Documento de **definições**, **requisitos** e **regras de negócio** do produt
 
 O sistema deve permitir:
 
-- Criação, edição, visualização e exclusão de  **administradores**.
+- Criação, edição, visualização e exclusão de **administradores**.
 - Criação, edição, visualização e exclusão de **leitores**.
 - Criação, edição, visualização e exclusão de **livros**.
 - Permitir que usuários **peguem** livro emprestados.
@@ -40,13 +40,13 @@ Realizar o cadastro de um administrador no sistema, de forma que ele possa possu
 
 ### 3.2 Dados do administrador
 
-| Campo | Tipo | Descrição |
-|--------|------|-----------|
-| `nome` | string | Nome do administrador. |
-| `sobrenome` | string | Sobrenome do administrador. |
+| Campo            | Tipo    | Descrição                           |
+| ---------------- | ------- | ----------------------------------- |
+| `nome`           | string  | Nome do administrador.              |
+| `sobrenome`      | string  | Sobrenome do administrador.         |
 | `id_funcionario` | inteiro | Identificador único do funcionário. |
-| `email` | string | E-mail do administrador. |
-| `senha` | string | Senha de acesso do administrador. |
+| `email`          | string  | E-mail do administrador.            |
+| `senha`          | string  | Senha de acesso do administrador.   |
 
 ### 3.3 Regras de negócio e validação
 
@@ -58,11 +58,11 @@ Realizar o cadastro de um administrador no sistema, de forma que ele possa possu
 
 ### 3.4 Requisitos de resposta HTTP (cadastro)
 
-| Condição | Código HTTP | Comportamento |
-|----------|-------------|---------------|
-| Campo obrigatório vazio | `400 Bad Request` | Erro de validação. |
-| Formato de `email` inválido | `400 Bad Request` | Erro de validação. |
-| `id_funcionario` ou `email` já cadastrados | `409 Conflict` | Erro específico informando que `id_funcionario` ou `email` já existe. |
+| Condição                                   | Código HTTP       | Comportamento                                                         |
+| ------------------------------------------ | ----------------- | --------------------------------------------------------------------- |
+| Campo obrigatório vazio                    | `400 Bad Request` | Erro de validação.                                                    |
+| Formato de `email` inválido                | `400 Bad Request` | Erro de validação.                                                    |
+| `id_funcionario` ou `email` já cadastrados | `409 Conflict`    | Erro específico informando que `id_funcionario` ou `email` já existe. |
 
 ---
 
@@ -70,11 +70,11 @@ Realizar o cadastro de um administrador no sistema, de forma que ele possa possu
 
 ### 4.1 Requisitos de interface (API)
 
-| Item | Especificação |
-|------|----------------|
-| Operação | `POST /login` |
-| Cabeçalho `Content-Type` | `application/json` |
-| Cabeçalho `Authorization` | `Bearer {token}` |
+| Item                      | Especificação      |
+| ------------------------- | ------------------ |
+| Operação                  | `POST /login`      |
+| Cabeçalho `Content-Type`  | `application/json` |
+| Cabeçalho `Authorization` | `Bearer {token}`   |
 
 ### 4.2 Entidade `Emprestimo` (atributos)
 
@@ -139,7 +139,7 @@ Campos obrigatórios nas regras de negócio incluem **`id_livro`** (ISBN). Demai
 }
 ```
 
-*`<data_devolucao>` representa a data efetiva retornada pelo sistema na mensagem.*
+_`<data_devolucao>` representa a data efetiva retornada pelo sistema na mensagem._
 
 **500 — Erro interno do servidor**
 
@@ -169,8 +169,8 @@ Campos obrigatórios nas regras de negócio incluem **`id_livro`** (ISBN). Demai
 
 ### 5.1 Requisitos de interface (API)
 
-| Item | Especificação |
-|------|----------------|
+| Item     | Especificação  |
+| -------- | -------------- |
 | Operação | `POST /livros` |
 
 ### 5.2 Entidade `Livro` (atributos)

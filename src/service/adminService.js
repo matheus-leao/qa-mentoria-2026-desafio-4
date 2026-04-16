@@ -1,11 +1,11 @@
-import bcrypt from 'bcryptjs';
+import bcrypt from "bcryptjs";
 import {
   adminsById,
   adminsByFuncionario,
   adminsByEmail,
   nextAdminId,
-} from '../model/store.js';
-import { isValidEmail } from '../utils/validation.js';
+} from "../model/store.js";
+import { isValidEmail } from "../utils/validation.js";
 
 const SALT = 10;
 
@@ -13,48 +13,55 @@ export function criarAdministrador(body) {
   const { nome, sobrenome, id_funcionario, email, senha } = body;
 
   const erros = [];
-  if (!nome || String(nome).trim() === '') erros.push('Campo nome é obrigatório.');
-  if (!sobrenome || String(sobrenome).trim() === '') erros.push('Campo sobrenome é obrigatório.');
-  if (id_funcionario === undefined || id_funcionario === null || id_funcionario === '') {
-    erros.push('Campo id_funcionario é obrigatório.');
+  if (!nome || String(nome).trim() === "")
+    erros.push("Campo nome é obrigatório.");
+  if (!sobrenome || String(sobrenome).trim() === "")
+    erros.push("Campo sobrenome é obrigatório.");
+  if (
+    id_funcionario === undefined ||
+    id_funcionario === null ||
+    id_funcionario === ""
+  ) {
+    erros.push("Campo id_funcionario é obrigatório.");
   }
-  if (!email || String(email).trim() === '') erros.push('Campo email é obrigatório.');
-  if (!senha || String(senha) === '') erros.push('Campo senha é obrigatório.');
+  if (!email || String(email).trim() === "")
+    erros.push("Campo email é obrigatório.");
+  if (!senha || String(senha) === "") erros.push("Campo senha é obrigatório.");
 
   if (erros.length) {
-    const err = new Error('VALIDATION');
+    const err = new Error("VALIDATION");
     err.status = 400;
     err.detalhes = erros;
     throw err;
   }
 
   if (!isValidEmail(email)) {
-    const err = new Error('VALIDATION');
+    const err = new Error("VALIDATION");
     err.status = 400;
-    err.detalhes = ['Formato de email inválido.'];
+    err.detalhes = ["Formato de email inválido."];
     throw err;
   }
 
   const idF = Number(id_funcionario);
   if (!Number.isInteger(idF)) {
-    const err = new Error('VALIDATION');
+    const err = new Error("VALIDATION");
     err.status = 400;
-    err.detalhes = ['id_funcionario deve ser um inteiro.'];
+    err.detalhes = ["id_funcionario deve ser um inteiro."];
     throw err;
   }
 
   if (adminsByFuncionario.has(idF)) {
-    const err = new Error('CONFLICT');
+    const err = new Error("CONFLICT");
     err.status = 409;
-    err.campo = 'id_funcionario';
+    err.campo = "id_funcionario";
     throw err;
   }
 
   const emailNorm = String(email).trim().toLowerCase();
   if (adminsByEmail.has(emailNorm)) {
-    const err = new Error('CONFLICT');
+    const err = new Error("CONFLICT");
     err.status = 409;
-    err.campo = 'email';
+    err.campo = "email";
     throw err;
   }
 
@@ -124,28 +131,36 @@ function validarAdminPayload(body, { isUpdate = false } = {}) {
   const erros = [];
 
   if (!isUpdate || nome !== undefined) {
-    if (!nome || String(nome).trim() === '') erros.push('Campo nome é obrigatório.');
+    if (!nome || String(nome).trim() === "")
+      erros.push("Campo nome é obrigatório.");
   }
   if (!isUpdate || sobrenome !== undefined) {
-    if (!sobrenome || String(sobrenome).trim() === '') erros.push('Campo sobrenome é obrigatório.');
+    if (!sobrenome || String(sobrenome).trim() === "")
+      erros.push("Campo sobrenome é obrigatório.");
   }
   if (!isUpdate || id_funcionario !== undefined) {
-    if (id_funcionario === undefined || id_funcionario === null || id_funcionario === '') {
-      erros.push('Campo id_funcionario é obrigatório.');
+    if (
+      id_funcionario === undefined ||
+      id_funcionario === null ||
+      id_funcionario === ""
+    ) {
+      erros.push("Campo id_funcionario é obrigatório.");
     } else if (!Number.isInteger(Number(id_funcionario))) {
-      erros.push('id_funcionario deve ser um inteiro.');
+      erros.push("id_funcionario deve ser um inteiro.");
     }
   }
   if (!isUpdate || email !== undefined) {
-    if (!email || String(email).trim() === '') erros.push('Campo email é obrigatório.');
-    else if (!isValidEmail(email)) erros.push('Formato de email inválido.');
+    if (!email || String(email).trim() === "")
+      erros.push("Campo email é obrigatório.");
+    else if (!isValidEmail(email)) erros.push("Formato de email inválido.");
   }
   if (!isUpdate || senha !== undefined) {
-    if (!senha || String(senha) === '') erros.push('Campo senha é obrigatório.');
+    if (!senha || String(senha) === "")
+      erros.push("Campo senha é obrigatório.");
   }
 
   if (erros.length) {
-    const err = new Error('VALIDATION');
+    const err = new Error("VALIDATION");
     err.status = 400;
     err.detalhes = erros;
     throw err;
@@ -155,7 +170,7 @@ function validarAdminPayload(body, { isUpdate = false } = {}) {
 export function atualizarAdministrador(id, body) {
   const admin = buscarAdminPorId(id);
   if (!admin) {
-    const err = new Error('NOT_FOUND');
+    const err = new Error("NOT_FOUND");
     err.status = 404;
     throw err;
   }
@@ -167,9 +182,9 @@ export function atualizarAdministrador(id, body) {
     const novoIdF = Number(payload.id_funcionario);
     const existente = adminsByFuncionario.get(novoIdF);
     if (existente && existente.id !== admin.id) {
-      const err = new Error('CONFLICT');
+      const err = new Error("CONFLICT");
       err.status = 409;
-      err.campo = 'id_funcionario';
+      err.campo = "id_funcionario";
       throw err;
     }
     adminsByFuncionario.delete(admin.id_funcionario);
@@ -181,9 +196,9 @@ export function atualizarAdministrador(id, body) {
     const novoEmail = String(payload.email).trim().toLowerCase();
     const existente = adminsByEmail.get(novoEmail);
     if (existente && existente.id !== admin.id) {
-      const err = new Error('CONFLICT');
+      const err = new Error("CONFLICT");
       err.status = 409;
-      err.campo = 'email';
+      err.campo = "email";
       throw err;
     }
     adminsByEmail.delete(admin.email);
@@ -192,8 +207,10 @@ export function atualizarAdministrador(id, body) {
   }
 
   if (payload.nome !== undefined) admin.nome = String(payload.nome).trim();
-  if (payload.sobrenome !== undefined) admin.sobrenome = String(payload.sobrenome).trim();
-  if (payload.senha !== undefined) admin.senhaHash = bcrypt.hashSync(String(payload.senha), SALT);
+  if (payload.sobrenome !== undefined)
+    admin.sobrenome = String(payload.sobrenome).trim();
+  if (payload.senha !== undefined)
+    admin.senhaHash = bcrypt.hashSync(String(payload.senha), SALT);
 
   return {
     id: admin.id,
@@ -207,7 +224,7 @@ export function atualizarAdministrador(id, body) {
 export function removerAdministrador(id) {
   const admin = buscarAdminPorId(id);
   if (!admin) {
-    const err = new Error('NOT_FOUND');
+    const err = new Error("NOT_FOUND");
     err.status = 404;
     throw err;
   }

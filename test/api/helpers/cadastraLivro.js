@@ -1,9 +1,9 @@
-import request from 'supertest';
+import request from "supertest";
 
 export const cadastrarLivroValido = async (app, token, livro) => {
   const response = await request(app)
-    .post('/livros')
-    .set('Authorization', `Bearer ${token}`)
+    .post("/livros")
+    .set("Authorization", `Bearer ${token}`)
     .send({
       id_livro: livro.id_livro,
       nome: livro.nome,
@@ -18,7 +18,9 @@ export const cadastrarLivroValido = async (app, token, livro) => {
     });
 
   if (response.status !== 201) {
-    throw new Error(`Falha ao cadastrar livro válido: ${response.status} ${JSON.stringify(response.body)}`);
+    throw new Error(
+      `Falha ao cadastrar livro válido: ${response.status} ${JSON.stringify(response.body)}`,
+    );
   }
 
   return response.body;

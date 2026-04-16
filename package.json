@@ -18,6 +18,7 @@
     "express": "^5.2.1",
     "faker": "^6.6.6",
     "jsonwebtoken": "^9.0.3",
+    "prettier": "^3.8.3",
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
