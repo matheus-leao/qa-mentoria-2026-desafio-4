@@ -1,6 +1,6 @@
-import request from "supertest";
-import { expect } from "chai";
-import { getApp } from "../helpers/appBuilder.js";
+import request from 'supertest';
+import { expect } from 'chai';
+import { getApp } from '../../infra/helpers/appBuilder.js';
 
 describe("POST /livros", () => {
   it("Deve retornar autores como array de strings ao cadastrar livro com múltiplos autores", async () => {

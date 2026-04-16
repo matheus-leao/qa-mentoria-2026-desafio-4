@@ -1,10 +1,10 @@
-import request from "supertest";
-import { expect } from "chai";
-import { getApp } from "../helpers/appBuilder.js";
-import { criaUsuarioAdmin } from "../helpers/criaUsuarioAdmin.js";
-import { obterToken } from "../helpers/autenticacao.js";
-import { cadastrarLivroValido } from "../helpers/cadastraLivro.js";
-import { faker } from "@faker-js/faker";
+import request from 'supertest';
+import { expect } from 'chai';
+import { getApp } from '../../infra/helpers/appBuilder.js';
+import { criaUsuarioAdmin } from '../../infra/helpers/criaUsuarioAdmin.js';
+import { obterToken } from '../../infra/helpers/autenticacao.js';
+import { cadastrarLivroValido } from '../../infra/helpers/cadastraLivro.js';
+import { faker } from '@faker-js/faker';
 
 describe("Testes de Cadastro de Livros", () => {
   let token;
