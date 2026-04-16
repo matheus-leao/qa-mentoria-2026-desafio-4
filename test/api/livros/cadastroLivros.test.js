@@ -8,7 +8,6 @@ import livro from '../fixtures/postLivros.json' with { type: 'json' };
 import { faker } from '@faker-js/faker';
 
 describe('Testes de Cadastro de Livros', () => { 
-    let admin;
     let token;
     let livroCadastrado;
 
