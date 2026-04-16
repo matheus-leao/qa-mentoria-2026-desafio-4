@@ -22,7 +22,7 @@ describe('DELETE /administradores/:id', () => {
             token = await obterToken(getApp(), usuarioAdminFaker.id_funcionario, usuarioAdminFaker.senha);
         });
 
-    it.only('Deve retornar 204', async () => {
+    it('Deve retornar 204', async () => {
         const response = await request(getApp()).delete(`/administradores/${adminId}`)
         expect(response.status).to.equal(204)
     })
