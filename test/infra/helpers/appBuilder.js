@@ -1,5 +1,6 @@
 import app from '../../../app.js';
+import { config } from 'dotenv';
 
 export function getApp() {
-  return app;
+  return process.env.baseUrl;
 }
