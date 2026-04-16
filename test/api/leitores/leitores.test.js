@@ -1,6 +1,6 @@
 import request from "supertest";
 import { expect } from "chai";
-import { getApp } from "../helpers/appBuilder.js";
+import { getApp } from "../../infra/helpers/appBuilder.js";
 
 describe("Suite de Teste Cadastro Leitores", () => {
   it("POST Deve realizar o cadastro de leitor com dados válidos", async () => {

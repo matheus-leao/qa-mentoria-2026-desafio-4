@@ -1,7 +1,7 @@
 import request from "supertest";
 import { expect } from "chai";
-import { getApp } from "../helpers/appBuilder.js";
-import { postLogin } from "../helpers/autenticacao.js";
+import { getApp } from "../../infra/helpers/appBuilder.js";
+import { postLogin } from "../../infra/helpers/autenticacao.js";
 
 describe("PUT /administradores/:id", () => {
   let responseLogin;

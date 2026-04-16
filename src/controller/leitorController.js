@@ -52,12 +52,10 @@ export function putLeitor(req, res) {
         .json({ erro: "Erro de validação", detalhes: e.detalhes });
     }
     if (e.message === "CONFLICT") {
-      return res
-        .status(409)
-        .json({
-          erro: "Conflito de cadastro",
-          detalhes: ["Já existe leitor com este email."],
-        });
+      return res.status(409).json({
+        erro: "Conflito de cadastro",
+        detalhes: ["Já existe leitor com este email."],
+      });
     }
     if (e.message === "NOT_FOUND") {
       return res.status(404).json({ erro: "Leitor não encontrado." });

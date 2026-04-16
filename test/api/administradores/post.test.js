@@ -1,6 +1,6 @@
 import request from "supertest";
 import { expect } from "chai";
-import { getApp } from "../helpers/appBuilder.js";
+import { getApp } from "../../infra/helpers/appBuilder.js";
 
 describe("POST /administradores", () => {
   it("Deve retornar 201 ao realizar o cadastro corretamente de um administrador", async () => {
