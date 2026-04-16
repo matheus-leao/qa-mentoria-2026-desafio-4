@@ -4,11 +4,9 @@ import { getApp } from '../helpers/appBuilder.js';
 import { criaUsuarioAdmin } from '../helpers/criaUsuarioAdmin.js';
 import { obterToken } from '../helpers/autenticacao.js';
 import { cadastrarLivroValido } from '../helpers/cadastraLivro.js';
-import livro from '../fixtures/postLivros.json' with { type: 'json' };
 import { faker } from '@faker-js/faker';
 
 describe('Testes de Cadastro de Livros', () => { 
-    let admin;
     let token;
     let livroCadastrado;
 
@@ -20,12 +18,24 @@ describe('Testes de Cadastro de Livros', () => {
         "senha": "senha123"
     }
 
+    const livro = {
+        "id_livro": faker.number.hex(5),
+        "nome": faker.book.title(),
+        "autores": [faker.book.author(), faker.book.author()],
+        "ano_publicacao": faker.number.int({min: 1800, max:2026}),
+        "edicao": 1,
+        "paginas": faker.number.int({min: 200, max:400}),
+        "qtde_disponivel": 5,
+        "categoria": [faker.book.genre()],
+        "editora": faker.book.publisher(),
+        "idioma": "Português"
+    }
+
     before(async () => {
-        admin = await criaUsuarioAdmin(getApp(), usuarioAdminFaker);
+        await criaUsuarioAdmin(getApp(), usuarioAdminFaker);
         token = await obterToken(getApp(), usuarioAdminFaker.id_funcionario, usuarioAdminFaker.senha);
         livroCadastrado = await cadastrarLivroValido(getApp(), token, livro);
     });
-
 
     describe('GET /cadastroLivros', () => {
         it('BUsca a lista de Livros cadastrados', async () => {
@@ -114,7 +124,7 @@ describe('Testes de Cadastro de Livros', () => {
         it('Atualiza um livro específico por ID e retorna 200 ', async () => {
             const livroAtualizado = { ...livroCadastrado, nome: 'Livro de Teste Atualizado' };
             const resposta = await request(getApp())
-            .put('/livros/10STD')
+            .put(`/livros/${livro.id_livro}`)
             .set('Authorization', `Bearer ${token}`)
             .send(livroAtualizado);
 

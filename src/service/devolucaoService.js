@@ -6,12 +6,22 @@ import { buscarLivroPorIsbn, atualizarQtdeLivro } from './livroService.js';
 export function registrarDevolucao(idLeitor, body) {
   const { id_emprestimo, id_livro } = body || {};
 
+  const hasEmprestimoId = id_emprestimo !== undefined && id_emprestimo !== null && id_emprestimo !== '';
+  const hasLivroId = id_livro !== undefined && id_livro !== null && String(id_livro).trim() !== '';
+
+  if (!hasEmprestimoId && !hasLivroId) {
+    const err = new Error('BAD_REQUEST');
+    err.status = 400;
+    err.detalhes = ['Informe id_emprestimo ou id_livro.'];
+    throw err;
+  }
+
   let emprestimo = null;
 
-  if (id_emprestimo !== undefined && id_emprestimo !== null && id_emprestimo !== '') {
+  if (hasEmprestimoId) {
     const id = Number(id_emprestimo);
     emprestimo = emprestimos.find((e) => e.id === id);
-  } else if (id_livro !== undefined && id_livro !== null && String(id_livro).trim() !== '') {
+  } else if (hasLivroId) {
     const isbn = String(id_livro).trim();
     emprestimo = emprestimos.find(
       (e) =>

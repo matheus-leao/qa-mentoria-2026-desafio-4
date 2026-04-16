@@ -28,10 +28,19 @@ export const obterToken = async (appInstance, id_funcionario, senha) => {
     const respostaLogin = await request(appInstance)
         .post('/auth/admin/login')
         .set('Content-Type', "application/json")
-        .send({ 
-            "id_funcionario": id_funcionario, 
+        .send({
+            "id_funcionario": id_funcionario,
             "senha": senha
         });
+
+    return respostaLogin.body.token;
+};
+
+export const obterTokenLeitor = async (appInstance, email, senha) => {
+    const respostaLogin = await request(appInstance)
+        .post('/auth/login')
+        .set('Content-Type', 'application/json')
+        .send({ email, senha });
 
     return respostaLogin.body.token;
 };
