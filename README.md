@@ -17,10 +17,10 @@ npm install
 
 2. (Opcional) Crie um arquivo `.env` na raiz do projeto:
 
-| Variável      | Descrição                          | Padrão                        |
-|---------------|------------------------------------|-------------------------------|
-| `PORT`        | Porta HTTP                         | `3000`                        |
-| `JWT_SECRET`  | Segredo para assinatura dos JWTs   | valor de desenvolvimento fixo |
+| Variável     | Descrição                        | Padrão                        |
+| ------------ | -------------------------------- | ----------------------------- |
+| `PORT`       | Porta HTTP                       | `3000`                        |
+| `JWT_SECRET` | Segredo para assinatura dos JWTs | valor de desenvolvimento fixo |
 
 Exemplo:
 
@@ -63,30 +63,30 @@ Conforme `requisitos.md`, a operação de **empréstimo** é `POST /login` com *
 
 ## Endpoints principais
 
-| Método | Rota                 | Auth        | Descrição |
-|--------|----------------------|------------|-----------|
-| GET    | `/health`            | —          | Saúde do serviço |
-| POST   | `/administradores`   | —          | Criação de administrador |
-| PUT    | `/administradores/:id` | —        | Edição de administrador |
-| DELETE | `/administradores/:id` | —       | Exclusão de administrador |
-| POST   | `/leitores`          | —          | Criação de leitor |
-| PUT    | `/leitores/:id`      | —          | Edição de leitor |
-| DELETE | `/leitores/:id`      | —          | Exclusão de leitor |
-| POST   | `/auth/login`        | —          | Login leitor → JWT |
-| POST   | `/auth/admin/login` | —          | Login admin → JWT |
-| POST   | `/livros`            | Bearer     | Criação de livro (usuário autenticado) |
-| PUT    | `/livros/:id_livro`  | Bearer     | Edição de livro |
-| DELETE | `/livros/:id_livro`  | Bearer     | Exclusão de livro |
-| POST   | `/login`             | Bearer leitor | Empréstimo (ISBN em `id_livro`) |
-| POST   | `/devolucoes`        | Bearer leitor | Devolução (`id_emprestimo` ou `id_livro`) |
+| Método | Rota                   | Auth          | Descrição                                 |
+| ------ | ---------------------- | ------------- | ----------------------------------------- |
+| GET    | `/health`              | —             | Saúde do serviço                          |
+| POST   | `/administradores`     | —             | Criação de administrador                  |
+| PUT    | `/administradores/:id` | —             | Edição de administrador                   |
+| DELETE | `/administradores/:id` | —             | Exclusão de administrador                 |
+| POST   | `/leitores`            | —             | Criação de leitor                         |
+| PUT    | `/leitores/:id`        | —             | Edição de leitor                          |
+| DELETE | `/leitores/:id`        | —             | Exclusão de leitor                        |
+| POST   | `/auth/login`          | —             | Login leitor → JWT                        |
+| POST   | `/auth/admin/login`    | —             | Login admin → JWT                         |
+| POST   | `/livros`              | Bearer        | Criação de livro (usuário autenticado)    |
+| PUT    | `/livros/:id_livro`    | Bearer        | Edição de livro                           |
+| DELETE | `/livros/:id_livro`    | Bearer        | Exclusão de livro                         |
+| POST   | `/login`               | Bearer leitor | Empréstimo (ISBN em `id_livro`)           |
+| POST   | `/devolucoes`          | Bearer leitor | Devolução (`id_emprestimo` ou `id_livro`) |
 
 ## Testes com Supertest
 
 O projeto separa `app.js` (aplicação Express **sem** `listen`) e `server.js` (sobe o servidor). Para testes, importe apenas o app:
 
 ```javascript
-import request from 'supertest';
-import app from './app.js';
+import request from "supertest";
+import app from "./app.js";
 ```
 
 ## Estrutura de pastas

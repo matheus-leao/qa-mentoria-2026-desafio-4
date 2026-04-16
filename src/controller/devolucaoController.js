@@ -1,4 +1,4 @@
-import { registrarDevolucao } from '../service/devolucaoService.js';
+import { registrarDevolucao } from "../service/devolucaoService.js";
 
 export function postDevolucao(req, res) {
   try {
@@ -6,22 +6,22 @@ export function postDevolucao(req, res) {
     const resultado = registrarDevolucao(idLeitor, req.body);
     return res.status(200).json(resultado);
   } catch (e) {
-    if (e.message === 'NOT_FOUND') {
+    if (e.message === "NOT_FOUND") {
       return res.status(404).json({
-        erro: 'Não encontrado',
+        erro: "Não encontrado",
         detalhes: e.detalhes,
       });
     }
-    if (e.message === 'FORBIDDEN') {
-      return res.status(403).json({ erro: 'Usuário não autorizado.' });
+    if (e.message === "FORBIDDEN") {
+      return res.status(403).json({ erro: "Usuário não autorizado." });
     }
-    if (e.message === 'BAD_REQUEST') {
+    if (e.message === "BAD_REQUEST") {
       return res.status(400).json({
-        erro: 'Dados inválidos',
+        erro: "Dados inválidos",
         detalhes: e.detalhes,
       });
     }
     console.error(e);
-    return res.status(500).json({ erro: 'Erro interno do servidor' });
+    return res.status(500).json({ erro: "Erro interno do servidor" });
   }
 }

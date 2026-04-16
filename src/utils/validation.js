@@ -1,16 +1,16 @@
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function isValidEmail(email) {
-  return typeof email === 'string' && EMAIL_RE.test(email.trim());
+  return typeof email === "string" && EMAIL_RE.test(email.trim());
 }
 
 export function normalizeAutores(autores) {
   if (Array.isArray(autores)) {
     return autores.map((a) => String(a).trim()).filter(Boolean);
   }
-  if (typeof autores === 'string') {
+  if (typeof autores === "string") {
     return autores
-      .split(',')
+      .split(",")
       .map((a) => a.trim())
       .filter(Boolean);
   }
@@ -18,6 +18,9 @@ export function normalizeAutores(autores) {
 }
 
 export function livroSignature(nome, autoresArr, ano, edicao) {
-  const a = [...autoresArr].map((x) => x.trim().toLowerCase()).sort().join('|');
+  const a = [...autoresArr]
+    .map((x) => x.trim().toLowerCase())
+    .sort()
+    .join("|");
   return `${String(nome).trim().toLowerCase()}#${a}#${ano}#${edicao}`;
 }
