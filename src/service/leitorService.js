@@ -1,6 +1,6 @@
-import bcrypt from 'bcryptjs';
-import { leitoresById, leitoresByEmail, nextLeitorId } from '../model/store.js';
-import { isValidEmail } from '../utils/validation.js';
+import bcrypt from "bcryptjs";
+import { leitoresById, leitoresByEmail, nextLeitorId } from "../model/store.js";
+import { isValidEmail } from "../utils/validation.js";
 
 const SALT = 10;
 
@@ -8,30 +8,33 @@ export function criarLeitor(body) {
   const { nome, sobrenome, email, senha } = body;
 
   const erros = [];
-  if (!nome || String(nome).trim() === '') erros.push('Campo nome é obrigatório.');
-  if (!sobrenome || String(sobrenome).trim() === '') erros.push('Campo sobrenome é obrigatório.');
-  if (!email || String(email).trim() === '') erros.push('Campo email é obrigatório.');
-  if (!senha || String(senha) === '') erros.push('Campo senha é obrigatório.');
+  if (!nome || String(nome).trim() === "")
+    erros.push("Campo nome é obrigatório.");
+  if (!sobrenome || String(sobrenome).trim() === "")
+    erros.push("Campo sobrenome é obrigatório.");
+  if (!email || String(email).trim() === "")
+    erros.push("Campo email é obrigatório.");
+  if (!senha || String(senha) === "") erros.push("Campo senha é obrigatório.");
 
   if (erros.length) {
-    const err = new Error('VALIDATION');
+    const err = new Error("VALIDATION");
     err.status = 400;
     err.detalhes = erros;
     throw err;
   }
 
   if (!isValidEmail(email)) {
-    const err = new Error('VALIDATION');
+    const err = new Error("VALIDATION");
     err.status = 400;
-    err.detalhes = ['Formato de email inválido.'];
+    err.detalhes = ["Formato de email inválido."];
     throw err;
   }
 
   const emailNorm = String(email).trim().toLowerCase();
   if (leitoresByEmail.has(emailNorm)) {
-    const err = new Error('CONFLICT');
+    const err = new Error("CONFLICT");
     err.status = 409;
-    err.campo = 'email';
+    err.campo = "email";
     throw err;
   }
 
@@ -92,21 +95,25 @@ function validarLeitorPayload(body, { isUpdate = false } = {}) {
   const erros = [];
 
   if (!isUpdate || nome !== undefined) {
-    if (!nome || String(nome).trim() === '') erros.push('Campo nome é obrigatório.');
+    if (!nome || String(nome).trim() === "")
+      erros.push("Campo nome é obrigatório.");
   }
   if (!isUpdate || sobrenome !== undefined) {
-    if (!sobrenome || String(sobrenome).trim() === '') erros.push('Campo sobrenome é obrigatório.');
+    if (!sobrenome || String(sobrenome).trim() === "")
+      erros.push("Campo sobrenome é obrigatório.");
   }
   if (!isUpdate || email !== undefined) {
-    if (!email || String(email).trim() === '') erros.push('Campo email é obrigatório.');
-    else if (!isValidEmail(email)) erros.push('Formato de email inválido.');
+    if (!email || String(email).trim() === "")
+      erros.push("Campo email é obrigatório.");
+    else if (!isValidEmail(email)) erros.push("Formato de email inválido.");
   }
   if (!isUpdate || senha !== undefined) {
-    if (!senha || String(senha) === '') erros.push('Campo senha é obrigatório.');
+    if (!senha || String(senha) === "")
+      erros.push("Campo senha é obrigatório.");
   }
 
   if (erros.length) {
-    const err = new Error('VALIDATION');
+    const err = new Error("VALIDATION");
     err.status = 400;
     err.detalhes = erros;
     throw err;
@@ -116,7 +123,7 @@ function validarLeitorPayload(body, { isUpdate = false } = {}) {
 export function atualizarLeitor(id, body) {
   const leitor = leitoresById.get(Number(id));
   if (!leitor) {
-    const err = new Error('NOT_FOUND');
+    const err = new Error("NOT_FOUND");
     err.status = 404;
     throw err;
   }
@@ -128,9 +135,9 @@ export function atualizarLeitor(id, body) {
     const novoEmail = String(payload.email).trim().toLowerCase();
     const existente = leitoresByEmail.get(novoEmail);
     if (existente && existente.id !== leitor.id) {
-      const err = new Error('CONFLICT');
+      const err = new Error("CONFLICT");
       err.status = 409;
-      err.campo = 'email';
+      err.campo = "email";
       throw err;
     }
     leitoresByEmail.delete(leitor.email);
@@ -139,8 +146,10 @@ export function atualizarLeitor(id, body) {
   }
 
   if (payload.nome !== undefined) leitor.nome = String(payload.nome).trim();
-  if (payload.sobrenome !== undefined) leitor.sobrenome = String(payload.sobrenome).trim();
-  if (payload.senha !== undefined) leitor.senhaHash = bcrypt.hashSync(String(payload.senha), SALT);
+  if (payload.sobrenome !== undefined)
+    leitor.sobrenome = String(payload.sobrenome).trim();
+  if (payload.senha !== undefined)
+    leitor.senhaHash = bcrypt.hashSync(String(payload.senha), SALT);
 
   return {
     id: leitor.id,
@@ -153,7 +162,7 @@ export function atualizarLeitor(id, body) {
 export function removerLeitor(id) {
   const leitor = leitoresById.get(Number(id));
   if (!leitor) {
-    const err = new Error('NOT_FOUND');
+    const err = new Error("NOT_FOUND");
     err.status = 404;
     throw err;
   }
