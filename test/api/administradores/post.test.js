@@ -1,19 +1,21 @@
 import request from "supertest";
 import { expect } from "chai";
 import { getApp } from "../../infra/helpers/appBuilder.js";
+import { faker } from "@faker-js/faker";
 
 describe("POST /administradores", () => {
   it("Deve retornar 201 ao realizar o cadastro corretamente de um administrador", async () => {
     const bodyPost = {
-      nome: "Luana",
-      sobrenome: "Nascimento",
-      id_funcionario: 111,
-      email: "luanaa@example.com",
+      nome: faker.person.firstName(),
+      sobrenome: faker.person.lastName(),
+      id_funcionario: faker.number.int(3),
+      email: faker.internet.email().toLowerCase(),
       senha: "123456",
     };
     const response = await request(getApp())
       .post("/administradores")
       .send(bodyPost);
+
     expect(response.status).to.equal(201);
     expect(response.body.nome).to.equal(bodyPost.nome);
     expect(response.body.sobrenome).to.equal(bodyPost.sobrenome);
