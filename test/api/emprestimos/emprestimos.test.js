@@ -1,11 +1,11 @@
-import request from 'supertest';
-import { expect } from 'chai';
-import { getApp } from '../../infra/helpers/appBuilder.js';
-import { obterTokenLeitor } from '../../infra/helpers/autenticacao.js';
-import { cadastrarLivroValido } from '../../infra/helpers/cadastraLivro.js';
-import livro from '../../infra/fixtures/postLivros.json' with { type: 'json' };
-import { faker } from '@faker-js/faker';
-import { criarLeitor } from '../../infra/helpers/criaLeitor.js';
+import request from "supertest";
+import { expect } from "chai";
+import { getApp } from "../../infra/helpers/appBuilder.js";
+import { obterTokenLeitor } from "../../infra/helpers/autenticacao.js";
+import { cadastrarLivroValido } from "../../infra/helpers/cadastraLivro.js";
+import livro from "../../infra/fixtures/postLivros.json" with { type: "json" };
+import { faker } from "@faker-js/faker";
+import { criarLeitor } from "../../infra/helpers/criaLeitor.js";
 
 describe("Testes de Emprestimos de Livros", () => {
   let token;
